@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  mariadb:
+    image: 'bitnami/mariadb:latest'
+    container_name: mariadb
+    environment:
+      - MARIADB_USER=testlink
+      - MARIADB_PASSWORD=1q2w3e4r5T
+      - MARIADB_DATABASE=test-link
+      - MARIADB_ROOT_PASSWORD=1q2w3e4r5T
+    volumes:
+      - './mariadb-persistence:/bitnami'
+    privileged:
+        true
+    user:
+        root
+  testlink:
+    image: 'bitnami/testlink:latest'
+    container_name: testlink
+    environment:
+      - TESTLINK_DATABASE_USER=testlink
+      - TESTLINK_DATABASE_PASSWORD=1q2w3e4r5T
+      - TESTLINK_DATABASE_NAME=test-link
+      - TESTLINK_USERNAME=admin_ax_test
+      - TESTLINK_PASSWORD=123456
+      - TESTLINK_EMAIL=AAA@qq.com
+    ports:
+      - '1880:80'
+      - '18443:443'
+    volumes:
+      - './testlink-persistence:/bitnami'
+    depends_on:
+      - mariadb
+    privileged:
+      true
+    user:
+      root
